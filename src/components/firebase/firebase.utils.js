@@ -1,6 +1,6 @@
-import firebase from 'firebase/app'; // this gives acess to firestore and auth.
-import 'firebase/firestore'
-import 'firebase/auth'
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
 //region config from google server
 const config = {
@@ -14,7 +14,7 @@ const config = {
 };
 //endregion
 
-firebase.initializeApp(config); // configs the firebasepage.
+firebase.initializeApp(config);
 
 //region auth and firestore config
 export const auth = firebase.auth(); // this will be incharge of authentication
@@ -28,4 +28,4 @@ export const signInWithGoogle = () => auth.signInWithPopup(provider); // creates
                                                                       // provider is goolge here.
 //endregion
 
-export default firebase; // this is the whole library for import.
+export default firebase;
