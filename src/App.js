@@ -5,7 +5,7 @@ import HomePage from "./pages/homepage/homePage.Component";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInSignUpPage from "./pages/sign-in-sign-up/sign-in-sign-up.component";
-import {auth} from "./components/firebase/firebase.utils";
+import {auth, createUserProfileDocument} from "./components/firebase/firebase.utils";
 
 
 class App extends React.Component {
@@ -22,15 +22,32 @@ class App extends React.Component {
     unsubscribeFromAUth = null;
 
     componentDidMount() {
-        auth.onAuthStateChanged(user => {
-            // auth will change user will be updated here.  user is the parameter for the user object.
-            this.setState({currentUser: user})
-            console.log(user)
+        this.unsubscribeFromAUth = auth.onAuthStateChanged(async userAuth => {
+   // auth.onAuthStateChanged --> will check whether user status have changed or not.--> change only happneds when the user has logged in.
+            // usually returns a user.
+            //userAuth --> returns a property about the user in this case it will be name, email uid which are the most important.
+
+            if (userAuth) { // checks if userAuth is not null
+                const userRef = await createUserProfileDocument(userAuth); // create user ref based on userAuth
+                userRef.onSnapshot(snapshot => { // returns a snapshot For the user.
+                    this.setState({
+                        currentUser: { //crate currentUser based on currentUser
+                            id: snapshot.id, // pass the id.
+                            ...snapshot.data() // creates SnapShotData()
+                        }
+                    });
+                })
+            } else {
+                this.setState({currentUser: userAuth}) // sets the current user to null
+
+            }
+
+
         })
     }
 
     componentWillUnmount() {
-        this.unsubscribeFromAUth();
+
     }
 
     render() {

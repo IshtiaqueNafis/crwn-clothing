@@ -19,7 +19,7 @@ const Header = ({currentUser}) => {
                             Sign Out
                         </div>
 
-                        : <Link></Link>
+                        : <div/>
                 }
             </div>
         </div>
