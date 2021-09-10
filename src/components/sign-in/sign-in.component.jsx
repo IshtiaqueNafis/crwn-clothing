@@ -2,7 +2,7 @@ import React from 'react';
 import FormInput from "../form-input/form-input.componenet";
 import CustomButton from "../custom-button/custom-Button.componenet";
 import './sign-in.styles.scss'
-import {signInWithGoogle} from "../firebase/firebase.utils";
+import {auth, signInWithGoogle} from "../firebase/firebase.utils";
 
 class SignIn extends React.Component {
 
@@ -16,14 +16,21 @@ class SignIn extends React.Component {
         }
     }
 
-    handleSubmit = (e) => {
+    handleSubmit = async e => {
         e.preventDefault();
-        this.setState({email: '', password: ''})
+        const {email, password} = this.state;
+        try {
+            await auth.signInWithEmailAndPassword(email, password);
+            this.setState({email: '', password: ''})
+        } catch (e) {
+            console.log(e)
+        }
 
     }
     handleChange = (e) => {
         const {value, name} = e.target; //
-        this.setState({[name]: [value]})
+        this.setState({[name]: value})
+        // [name] means value is being dynamically created from the name option.
     }
 
     render() {
@@ -44,17 +51,15 @@ class SignIn extends React.Component {
                     <FormInput
                         name='password'
                         value={this.state.password}
-                        type="Password"
+                        type="password"
                         handleChange={this.handleChange}
-                        label='password'
+                        label='Password'
                         required/>
                     <div className='buttons'>
-                        <CustomButton type="submit">Sign in</CustomButton>
 
+                        <CustomButton  type="submit" >Sign in</CustomButton>
+                        <CustomButton onClick={signInWithGoogle} isGoogleSignIn>Sign in with Google</CustomButton>
 
-                    <CustomButton onClick={signInWithGoogle}
-                                  isGoogleSignIn
-                    >Sign in with Google</CustomButton>
                     </div>
 
                 </form>
