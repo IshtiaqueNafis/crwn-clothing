@@ -23,13 +23,14 @@ class App extends React.Component {
 
     componentDidMount() {
         this.unsubscribeFromAUth = auth.onAuthStateChanged(async userAuth => {
-   // auth.onAuthStateChanged --> will check whether user status have changed or not.--> change only happneds when the user has logged in.
+            // auth.onAuthStateChanged --> will check whether user status have changed or not.--> change only happneds when the user has logged in.
             // usually returns a user.
             //userAuth --> returns a property about the user in this case it will be name, email uid which are the most important.
 
             if (userAuth) { // checks if userAuth is not null
-                const userRef = await createUserProfileDocument(userAuth); // create user ref based on userAuth
-                userRef.onSnapshot(snapshot => { // returns a snapshot For the user.
+                const userRef = await createUserProfileDocument(userAuth); // documentreference
+
+                userRef.onSnapshot(snapshot => { // returns a snapshot For the user. which comes from docment reference.
                     this.setState({
                         currentUser: { //crate currentUser based on currentUser
                             id: snapshot.id, // pass the id.

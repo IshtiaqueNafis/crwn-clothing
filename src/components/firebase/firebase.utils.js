@@ -29,16 +29,41 @@ export const signInWithGoogle = () => auth.signInWithPopup(provider); // creates
 //endregion
 
 
-//region createUserProfileDocument --> going to be api request to get the user.
+//region createUserProfileDocument --> returns a document reference.
 export const createUserProfileDocument = async (userAuth, additionalData) => {
-//userAuth is going to come front UserAuth Library
-    // additional data will be an object
+
+    //region ****(userAuth, additionalData)****
+    /*
+        *userAuth is going to come front UserAuth Library --> export const auth = firebase.auth(); this library is a userObject
+        * additional data will be an object
+
+     */
+    //endregion
+
     if (!userAuth) return; // means no userAuth it is null and not logged in.
-    const userRef = fireStore.doc(`users/${userAuth.uid}`);
-    // userAuth --> has the lot of property but uid works as a id to identify the user.
-    // fireStore.doc(`users/${userAuth.uid} --> will get document reference with current user.
-    const snapShot = await userRef.get();
-    // get the  userRef.get()  --> get the object reference
+
+    const userRef = fireStore.doc(`users/${userAuth.uid}`); // this is a document reference
+
+    //region Const userRef = fireStore.doc(`users/${userAuth.uid}`); explained
+    /*
+     ****Query******
+    * this is asking for a query --> asking firestore for document or collection.  so pretty much asking for something from database
+    *  query gives quereyreference and querysnapsshot --> they can either come in as document or collection after
+    ****QueryReference******
+    * current place on the database
+    * document or collection will be returned from here
+    * users/${userAuth.uid} is  a document call --> cause const userRef = fireStore.doc(`users/${userAuth.uid}`); --> users is the collectionreferece cause it where the id is located.
+    *****DocumentReference vs Collection Reference ******
+    * document reference helps with crud operation. --> retturns documentSnapshot
+    * collections reference only does adding. --> returns querySnapshot
+    * similarities == both returns returns snapshotObject  via get()
+
+     */
+
+    //endregion
+
+    const snapShot = await userRef.get(); // SNAPSHOT IS BEING RECIVED FROM DOUCMENTREFERENCE THIS IS A DOCUMENTsNAPSHOT
+
     //region  adding user to database if the user does not exist.
     if (!snapShot.exists) { // exists is part of the property from the database.
         const {displayName, email} = userAuth; // desecrating displayName and email from the userAuth.
@@ -56,8 +81,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
             console.log('error creating user')
         }
     }
- //endregion
-    return userRef; // return userRef
+    //endregion
+    return userRef; // return userRef which is a userreference
 
 }
 
