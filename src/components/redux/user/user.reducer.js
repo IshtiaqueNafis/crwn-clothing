@@ -11,10 +11,10 @@ const UserReducer = (state = INITIAL_STATE, action) => {
     **State**
     * --> state is the object initial state or last state
     **Action**
-    * --> action object which has a type what action will be done
+    * --> action object which has a type what action will be done action is a function that returns an object.
     * -->  payload can be anything use payload to update state
     **state=INITIAL_STATE**
-    *  --> state always need to have inital state.
+    *  --> state always need to have initial state.
     *
      */
 

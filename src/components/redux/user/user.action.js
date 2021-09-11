@@ -5,4 +5,4 @@ export const setCurrentUser = user => ({
     type: 'SET_CURRENT_USER', // thins a string always
     payload: user
 
-})
+});

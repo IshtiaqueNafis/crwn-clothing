@@ -6,22 +6,16 @@ import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInSignUpPage from "./pages/sign-in-sign-up/sign-in-sign-up.component";
 import {auth, createUserProfileDocument} from "./components/firebase/firebase.utils";
-
+import {connect} from 'react-redux';
+import {setCurrentUser} from "./components/redux/user/user.action";
 
 class App extends React.Component {
-
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            currentUser: null
-
-        }
-    }
 
     unsubscribeFromAUth = null;
 
     componentDidMount() {
+        const {setCurrentUser} = this.props
+
         this.unsubscribeFromAUth = auth.onAuthStateChanged(async userAuth => {
             // auth.onAuthStateChanged --> will check whether user status have changed or not.--> change only happneds when the user has logged in.
             // usually returns a user.
@@ -31,7 +25,8 @@ class App extends React.Component {
                 const userRef = await createUserProfileDocument(userAuth); // documentreference
 
                 userRef.onSnapshot(snapshot => { // returns a snapshot For the user. which comes from docment reference.
-                    this.setState({
+                    setCurrentUser({
+                        // set currentUser is the function that is being passed.
                         currentUser: { //crate currentUser based on currentUser
                             id: snapshot.id, // pass the id.
                             ...snapshot.data() // creates SnapShotData()
@@ -54,7 +49,7 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <Header currentUser={this.state.currentUser}/>
+                <Header/>
                 <Switch>
 
                     <Route exact path='/' component={HomePage}/>
@@ -72,4 +67,25 @@ class App extends React.Component {
     }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+    // mapDispatchToProps --> gets the dispatch property
+    // returns an object prop name what ever props will be passed.
+    // which is set current user.
+    setCurrentUser: user => dispatch(setCurrentUser(user))
+
+    //region **setCurrentUser: user => dispatch(setCurrentUser(user))**
+    /*
+    ***dispatch**
+    * this is a property launches the new action we want to pass.
+    * this is also a function,
+    ***setCurrentUser***
+    * is the key at the end going to be an object.
+    * user is passed as value
+    ***dispatch(setCurrentUser(user)***
+    * where user is passed as an argument
+    * will return an action object
+     */
+    //endregion
+
+})
+export default connect(null, mapDispatchToProps)(App); // mapState to props cause there is no item necessary there.

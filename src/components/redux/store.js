@@ -18,11 +18,11 @@ const store = createStore(rootReducer, applyMiddleware(...middlewares));
 ***rootReducer***
 * is where all the reducers are located such as store.
 ***applyMiddleware(...middlewares)***
-* applyMiddleware --> helps with creating middleware.
+* applyMiddleware --> helps with creating middleware. returns an array with middle ware.
 * ...middlewares --> middleware is passed caused there could more than one argument.
  */
 //endregion
-console.log(store)
+
 
 export default store;
 
