@@ -4,6 +4,8 @@ import {Link} from "react-router-dom";
 import {connect} from 'react-redux' // this is a higher order component. will help connect gain redux
 import {ReactComponent as Logo} from "../../assests/crown.svg";
 import {auth} from "../firebase/firebase.utils";
+import CartIcon from "../cart-icon/cart-Icon.component";
+import CartDropDown from "../cart-dropdown/cart-dropdown.component";
 
 const Header = ({currentUser}) => {
     //region
@@ -27,7 +29,9 @@ const Header = ({currentUser}) => {
                     currentUser ? <div className='option' onClick={() => auth.signOut()}>Sign Out</div> :
                         <Link className='option' to='/contact'>Sign in</Link>
                 }
+                <CartIcon/>
             </div>
+            <CartDropDown/>
         </div>
     );
 };
