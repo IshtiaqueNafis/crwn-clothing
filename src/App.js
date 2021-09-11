@@ -1,72 +1,24 @@
 import React from 'react';
 import './App.css';
-import {Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
+import {auth, createUserProfileDocument} from "./components/firebase/firebase.utils";
+import {connect} from 'react-redux';
 import HomePage from "./pages/homepage/homePage.Component";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInSignUpPage from "./pages/sign-in-sign-up/sign-in-sign-up.component";
-import {auth, createUserProfileDocument} from "./components/firebase/firebase.utils";
-import {connect} from 'react-redux';
 import {setCurrentUser} from "./components/redux/user/user.action";
 
-class App extends React.Component {
+//region redux mapStateToProps,mapDispatchToProps
+//region const mapStateToProps = ({user}) --> get the current user from user.currentUser and set it to currentUser:
+const mapStateToProps = ({user}) => ({
+    //user --> is a reducer that is being destrucred. from the user:userReducer.
+    currentUser: user.currentUser
 
-    unsubscribeFromAUth = null;
+})
+//endregion
 
-    componentDidMount() {
-        const {setCurrentUser} = this.props
-
-        this.unsubscribeFromAUth = auth.onAuthStateChanged(async userAuth => {
-            // auth.onAuthStateChanged --> will check whether user status have changed or not.--> change only happneds when the user has logged in.
-            // usually returns a user.
-            //userAuth --> returns a property about the user in this case it will be name, email uid which are the most important.
-
-            if (userAuth) { // checks if userAuth is not null
-                const userRef = await createUserProfileDocument(userAuth); // documentreference
-
-                userRef.onSnapshot(snapshot => { // returns a snapshot For the user. which comes from docment reference.
-                    setCurrentUser({
-                        // set currentUser is the function that is being passed.
-                        currentUser: { //crate currentUser based on currentUser
-                            id: snapshot.id, // pass the id.
-                            ...snapshot.data() // creates SnapShotData()
-                        }
-                    });
-                })
-            } else {
-                this.setState({currentUser: userAuth}) // sets the current user to null
-
-            }
-
-
-        })
-    }
-
-    componentWillUnmount() {
-        this.unsubscribeFromAUth();
-    }
-
-    render() {
-        return (
-            <div>
-                <Header/>
-                <Switch>
-
-                    <Route exact path='/' component={HomePage}/>
-                    {/*
-        /*
-        exact is what the exact path will be the path has to be exactly for it to work.
-        path --> how will we get to page
-        component --> where will the page will go.
-        */}
-                    <Route path='/shop' component={ShopPage}/>
-                    <Route path='/contact' component={SignInSignUpPage}/>
-                </Switch>
-            </div>
-        );
-    }
-}
-
+//region  mapDispatchToProps = dispatch --> dispatches action setCurrentUser
 const mapDispatchToProps = dispatch => ({
     // mapDispatchToProps --> gets the dispatch property
     // returns an object prop name what ever props will be passed.
@@ -88,4 +40,66 @@ const mapDispatchToProps = dispatch => ({
     //endregion
 
 })
-export default connect(null, mapDispatchToProps)(App); // mapState to props cause there is no item necessary there.
+//endregion
+//endregion
+
+class App extends React.Component {
+
+    unsubscribeFromAuth = null;
+
+    componentDidMount() {
+
+        const {setCurrentUser} = this.props; // coming from const mapDispatchToProps = dispatch
+
+        this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+            // auth.onAuthStateChanged --> will check whether user status have changed or not.--> change only happneds when the user has logged in.
+            // usually returns a user.
+            //userAuth --> returns a property about the user in this case it will be name, email uid which are the most important.
+
+            if (userAuth) { // checks if userAuth is not null
+                const userRef = await createUserProfileDocument(userAuth); // documentreference
+
+                userRef.onSnapshot(snapshot => { // returns a snapshot For the user. which comes from docment reference.
+                    setCurrentUser({
+                            id: snapshot.id,
+                            ...snapshot.data()
+                        }
+                    );
+                })
+            } else {
+                setCurrentUser(userAuth);
+            }
+
+
+        })
+    }
+
+    componentWillUnmount() {
+        this.unsubscribeFromAuth();
+    }
+
+
+    render() {
+        return (
+            <div>
+                <Header/>
+                <Switch>
+
+                    <Route exact path='/' component={HomePage}/>
+                    {/*
+        /*
+        exact is what the exact path will be the path has to be exactly for it to work.
+        path --> how will we get to page
+        component --> where will the page will go.
+        */}
+                    <Route path='/shop' component={ShopPage}/>
+                    <Route exact path='/contact'
+                           render={() => this.props.currentUser ? (<Redirect to='/'/>) : (<SignInSignUpPage/>)}/>
+                </Switch>
+            </div>
+        );
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App); // mapState to props cause there is no item necessary there.

@@ -24,12 +24,8 @@ const Header = ({currentUser}) => {
                 <Link className='option' to='/shop'>SHOP</Link>
                 <Link className='option' to='/contact'>Contact</Link>
                 {
-                    currentUser ?
-                        <div className='option' onClick={() => auth.signOut()}>
-                            Sign Out
-                        </div>
-
-                        : <div/>
+                    currentUser ? <div className='option' onClick={() => auth.signOut()}>Sign Out</div> :
+                        <Link className='option' to='/contact'>Sign in</Link>
                 }
             </div>
         </div>
@@ -37,6 +33,7 @@ const Header = ({currentUser}) => {
 };
 //region  const mapStateToProps = (state) --> maps and creates currentUser object to State.user.currentUser.
 const mapStateToProps = (state) => ({
+
     //state is reducer which is the store we get from the  <Provider store={store}> thus this is from the store const store = createStore(rootReducer, applyMiddleware(...middlewares));
     currentUser: state.user.currentUser, // currentUser cromes from state.user.currentUser which is from user reducer.
     // returns an object with he following.
