@@ -7,7 +7,7 @@ import {auth} from "../firebase/firebase.utils";
 import CartIcon from "../cart-icon/cart-Icon.component";
 import CartDropDown from "../cart-dropdown/cart-dropdown.component";
 
-const Header = ({currentUser}) => {
+const Header = ({currentUser, hidden}) => {
     //region
     /*
     ***{currentUser}***
@@ -31,7 +31,9 @@ const Header = ({currentUser}) => {
                 }
                 <CartIcon/>
             </div>
-            <CartDropDown/>
+
+            {hidden ? null : <CartDropDown/>}
+
         </div>
     );
 };
@@ -40,6 +42,7 @@ const mapStateToProps = (state) => ({
 
     //state is reducer which is the store we get from the  <Provider store={store}> thus this is from the store const store = createStore(rootReducer, applyMiddleware(...middlewares));
     currentUser: state.user.currentUser, // currentUser cromes from state.user.currentUser which is from user reducer.
+    hidden: state.cart.hidden
     // returns an object with he following.
 })
 

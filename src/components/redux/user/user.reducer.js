@@ -1,5 +1,7 @@
+import {userActionTypes} from "./user.type";
+
 const INITIAL_STATE = {
-    currentUser: null
+    currentUser: null // this is the state for the user where currentUser is null.
 }
 
 const UserReducer = (state = INITIAL_STATE, action) => {
@@ -21,14 +23,14 @@ const UserReducer = (state = INITIAL_STATE, action) => {
     //endregion
     switch (action.type) {
 
-        case 'SET_CURRENT_USER':
+        case userActionTypes.SET_CURRENT_USER:
             return {
-                ...state, // this is coping the original state
+                ...state, // this is coping the original state cause state is immutable.
                 currentUser: action.payload // this is copying the current user.
             }
 
         default:
-            return state; // this will come when none of the action
+            return state; // this will come when none of the action where none fits.
 
     }
 
