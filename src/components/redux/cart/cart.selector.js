@@ -10,12 +10,18 @@ const selectCart = state => state.cart; //
 
 //endregion
 
+//region selectCartHidden [outputSelector]
+export const selectCartHidden = createSelector(
+    [selectCart],
+    cart => cart.hidden // get the cart.hidden
+)
+//endregion
 
 //region ***export const selectCartItems = createSelector([selectCart],combiner)[output Selector]***
 export const selectCartItems = createSelector(
     [selectCart], // this is an array with Selectcart that will return all the Cart from the reducer cart
     (cart) => cart.cartItems // from cart get the cartitems array
-    // this is a map memorier selector.
+    // this is a map memories selector.
 )
 //endregion
 
@@ -27,3 +33,4 @@ export const selectCartItemsCount = createSelector(
             accumulatedQuantity + cartItem.quantity, 0)
 )
 //endregion
+

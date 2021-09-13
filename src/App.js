@@ -8,14 +8,16 @@ import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInSignUpPage from "./pages/sign-in-sign-up/sign-in-sign-up.component";
 import {setCurrentUser} from "./components/redux/user/user.action";
+import {createStructuredSelector} from "reselect";
+import {selectCurrentUser} from "./components/redux/user/user.selector";
 
 //region redux mapStateToProps,mapDispatchToProps
 //region const mapStateToProps = ({user}) --> get the current user from user.currentUser and set it to currentUser:
-const mapStateToProps = ({user}) => ({
-    //user --> is a reducer that is being destrucred. from the user:userReducer.
-    currentUser: user.currentUser
-
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser
 })
+
+
 //endregion
 
 //region  mapDispatchToProps = dispatch --> dispatches action setCurrentUser
@@ -103,6 +105,6 @@ class App extends React.Component {
 
 
 export default connect(
-               mapStateToProps,
-               mapDispatchToProps)
-               (App); // mapState to props cause there is no item necessary there.
+    mapStateToProps,
+    mapDispatchToProps)
+(App); // mapState to props cause there is no item necessary there.

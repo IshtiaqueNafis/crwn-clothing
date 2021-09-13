@@ -6,6 +6,9 @@ import {ReactComponent as Logo} from "../../assests/crown.svg";
 import {auth} from "../firebase/firebase.utils";
 import CartIcon from "../cart-icon/cart-Icon.component";
 import CartDropDown from "../cart-dropdown/cart-dropdown.component";
+import {selectCurrentUser} from "../redux/user/user.selector";
+import {selectCartHidden} from "../redux/cart/cart.selector";
+import {createStructuredSelector} from "reselect";
 
 const Header = ({currentUser, hidden}) => {
     //region
@@ -37,12 +40,11 @@ const Header = ({currentUser, hidden}) => {
     );
 };
 //region  const mapStateToProps = (state) --> maps and creates currentUser object to State.user.currentUser.
-const mapStateToProps = (state) => ({
+const mapStateToProps =  createStructuredSelector({
+   // createStructuredSelector can pass a reference easily instead of creating currentUser:selectCurremtUser(state)
+    currentUser: selectCurrentUser,
+    hidden: selectCartHidden
 
-    //state is reducer which is the store we get from the  <Provider store={store}> thus this is from the store const store = createStore(rootReducer, applyMiddleware(...middlewares));
-    currentUser: state.user.currentUser, // currentUser cromes from state.user.currentUser which is from user reducer.
-    hidden: state.cart.hidden
-    // returns an object with he following.
 })
 
 //endregion

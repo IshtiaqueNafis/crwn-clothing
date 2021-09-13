@@ -4,6 +4,7 @@ import CustomButton from "../custom-button/custom-Button.componenet";
 import {connect} from "react-redux";
 import CartItems from "../cart-item/cart-item.component";
 import {selectCartItems} from "../redux/cart/cart.selector";
+import {createStructuredSelector} from "reselect";
 
 const CartDropDown = ({cartItems}) =>
     (
@@ -20,21 +21,9 @@ const CartDropDown = ({cartItems}) =>
         </div>
     );
 
-const mapStateToProps = (state) => ({
-    //region ***({cart:{cartItems}})***
-    /*
-    ***cart***
-    * cart comes from the cart reducer
-    ***cartItems***
-    *cartItems is the array from the   from cart reducer
-    const INITIAL_STATE = {
-    hidden: true,
-    cartItems: []
-}
+const mapStateToProps = createStructuredSelector ({
 
-     */
-    //endregion
-    cartItems: selectCartItems(state)
+    cartItems: selectCartItems
 });
 
 
