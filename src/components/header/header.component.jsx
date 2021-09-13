@@ -47,4 +47,6 @@ const mapStateToProps = (state) => ({
 
 //endregion
 
-export default connect(mapStateToProps)(Header);
+export default connect(
+               mapStateToProps)
+               (Header);

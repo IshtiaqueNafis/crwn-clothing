@@ -1,4 +1,5 @@
 import {CartActionTypes} from "./cart.types";
+import {addItemtoCart} from "./cart.utlis";
 
 
 const INITIAL_STATE = {
@@ -16,7 +17,7 @@ const CartReducer = (state = INITIAL_STATE, action) => {
         case CartActionTypes.ADD_ITEM:
             return {
                 ...state,
-                cartItems: [...state.cartItems, action.payload], //... state.cartItems mean spreading the array value for ...state. and action.payload will come after.
+                cartItems: addItemtoCart(state.cartItems, action.payload)
             }
         default:
             return state;

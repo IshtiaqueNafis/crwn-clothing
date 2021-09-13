@@ -49,7 +49,7 @@ class App extends React.Component {
 
     componentDidMount() {
 
-        const {setCurrentUser} = this.props; // coming from const mapDispatchToProps = dispatch
+        const {setCurrentUser} = this.props; // this is coming from
 
         this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
             // auth.onAuthStateChanged --> will check whether user status have changed or not.--> change only happneds when the user has logged in.
@@ -102,4 +102,7 @@ class App extends React.Component {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(App); // mapState to props cause there is no item necessary there.
+export default connect(
+               mapStateToProps,
+               mapDispatchToProps)
+               (App); // mapState to props cause there is no item necessary there.
