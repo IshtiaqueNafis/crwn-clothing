@@ -34,3 +34,9 @@ export const selectCartItemsCount = createSelector(
 )
 //endregion
 
+export const selectCartTotal = createSelector(
+    [selectCartItems],
+    cartItems => cartItems.reduce // now just loop through it add the quantaity.
+        ((accumulatedQuantity, cartItem) =>
+            accumulatedQuantity + cartItem.quantity * cartItem.price, 0)
+)

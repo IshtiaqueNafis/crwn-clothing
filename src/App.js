@@ -5,6 +5,7 @@ import {auth, createUserProfileDocument} from "./components/firebase/firebase.ut
 import {connect} from 'react-redux';
 import HomePage from "./pages/homepage/homePage.Component";
 import ShopPage from "./pages/shop/shop.component";
+import Checkout from "./components/checkout/checkout.component";
 import Header from "./components/header/header.component";
 import SignInSignUpPage from "./pages/sign-in-sign-up/sign-in-sign-up.component";
 import {setCurrentUser} from "./components/redux/user/user.action";
@@ -12,12 +13,10 @@ import {createStructuredSelector} from "reselect";
 import {selectCurrentUser} from "./components/redux/user/user.selector";
 
 //region redux mapStateToProps,mapDispatchToProps
-//region const mapStateToProps = ({user}) --> get the current user from user.currentUser and set it to currentUser:
+//region const mapStateToProps =  createStructuredSelector() -->setCurrentUser
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser
 })
-
-
 //endregion
 
 //region  mapDispatchToProps = dispatch --> dispatches action setCurrentUser
@@ -95,6 +94,7 @@ class App extends React.Component {
         component --> where will the page will go.
         */}
                     <Route path='/shop' component={ShopPage}/>
+                    <Route exact path='/checkout' component={Checkout}/>
                     <Route exact path='/contact'
                            render={() => this.props.currentUser ? (<Redirect to='/'/>) : (<SignInSignUpPage/>)}/>
                 </Switch>
