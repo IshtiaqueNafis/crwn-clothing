@@ -1,5 +1,7 @@
 export const addItemtoCart = (cartItems, cartItemToAdd) => {
-    const existingCartItem = cartItems.find(cartItem => cartItem.id === cartItemToAdd.id)
+    // cartItems is for cartItems which is an array full of cart items
+    // cartItemtoAdd is for cartItemId which is a cart.
+    const existingCartItem = cartItems.find(cartItem => cartItem.id === cartItemToAdd.id) // returns a boolean to check if existingCartItem can be found here.
 
     if (existingCartItem) {
         return cartItems.map(cartItem =>
