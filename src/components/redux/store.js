@@ -9,6 +9,7 @@ import {applyMiddleware, createStore} from 'redux';
 //endregion
 import {logger} from 'redux-logger'; // logs the action.
 import rootReducer from './root-reducer';
+import {persistStore} from 'redux-persist'
 
 const middlewares = [logger];  // store expects a middlewares array.
 
@@ -22,7 +23,7 @@ const store = createStore(rootReducer, applyMiddleware(...middlewares));
 * ...middlewares --> middleware is passed caused there could more than one argument.
  */
 //endregion
-
+export const persistor = persistStore(store); // persistaed version of the store. crate new prodiver that wrapping the application, created presisted version of the store.
 
 export default store;
 

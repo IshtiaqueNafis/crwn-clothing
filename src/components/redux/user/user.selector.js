@@ -6,7 +6,7 @@ const selectUser = state => state.user; // get the user state from the obkect.
 
 //region selectCurrentUser [output selector]
 export const selectCurrentUser = createSelector(
-    [selectUser],
-    user => user.currentUser
+    [selectUser], // selectUser is the state witht he user
+    user => user.currentUser // gives currentUser object.
 )
 //endregion
