@@ -2,6 +2,7 @@ import React from 'react';
 import './collectionPage.styles.scss'
 import {selectCollection} from "../../components/redux/shop/shop.selector";
 import {connect} from "react-redux";
+import CollectionItem from "../../components/collection-Items/collection-item.component";
 
 const CollectionPage = ({collection}) => {
     //region   path={`${match.path}/:collectionId`}
@@ -13,8 +14,16 @@ const CollectionPage = ({collection}) => {
 
     //endregion
     //match has acess to collection page.
+
+    const {title, items} = collection
     return (
         <div className='collection-page'>
+            <h2 className='title'>{title}</h2>
+            <div className='items'>
+                {
+                    items.map(item=><CollectionItem key={item.id} item={item} />)
+                }
+            </div>
             <h2>Category Page</h2>
         </div>
     );
