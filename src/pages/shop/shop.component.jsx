@@ -15,9 +15,8 @@ const ShopPage = ({match}) => { // match object is avilable from route a
     //endregion
     return (
         <div className='shop-page'>
-            <Route
-                exact path={`${match.path}`} // match.path -->
-                component={<CollectionsOverView/>}/>
+
+            <Route exact path={`${match.path}`} component={CollectionsOverView} />
             <Route
                 path={`${match.path}/:collectionId`}
                 component={CollectionPage}/>
