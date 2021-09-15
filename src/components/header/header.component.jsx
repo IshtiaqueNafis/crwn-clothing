@@ -9,6 +9,7 @@ import CartDropDown from "../cart-dropdown/cart-dropdown.component";
 import {selectCurrentUser} from "../redux/user/user.selector";
 import {selectCartHidden} from "../redux/cart/cart.selector";
 import {createStructuredSelector} from "reselect";
+import {HeaderContainer, LogoContainer, OptionDiv, OptionLink, OptionsContainer} from "./headers.styles";
 
 const Header = ({currentUser, hidden}) => {
     //region
@@ -21,22 +22,22 @@ const Header = ({currentUser, hidden}) => {
 
     //endregion
     return (
-        <div className="header">
-            <Link to='/' className='logo-container'>
+        <HeaderContainer>
+            <LogoContainer>
                 <Logo className='logo'/>
-            </Link>
-            <div className='options'>
-                <Link className='option' to='/shop'>SHOP</Link>
-                <Link className='option' to='/contact'>Contact</Link>
+            </LogoContainer>
+            <OptionsContainer>
+                <OptionLink  to='/shop'>SHOP</OptionLink>
+                <OptionLink  to='/contact'>Contact</OptionLink>
                 {
-                    currentUser ? <div className='option' onClick={() => auth.signOut()}>Sign Out</div> :
-                        <Link className='option' to='/contact'>Sign in</Link>
+                    currentUser ? <OptionDiv  onClick={() => auth.signOut()}>Sign Out</OptionDiv> :
+                        <OptionLink className='option' to='/contact'>Sign in</OptionLink>
                 }
                 <CartIcon/>
-            </div>
+            </OptionsContainer>
             {hidden ? null : <CartDropDown/>}
 
-        </div>
+        </HeaderContainer>
     );
 };
 //region  const mapStateToProps = (state) --> maps and creates currentUser object to State.user.currentUser.
