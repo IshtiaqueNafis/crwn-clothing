@@ -1,6 +1,5 @@
 import React from 'react';
 import './header.styles.scss'
-import {Link} from "react-router-dom";
 import {connect} from 'react-redux' // this is a higher order component. will help connect gain redux
 import {ReactComponent as Logo} from "../../assests/crown.svg";
 import {auth} from "../firebase/firebase.utils";
@@ -23,14 +22,14 @@ const Header = ({currentUser, hidden}) => {
     //endregion
     return (
         <HeaderContainer>
-            <LogoContainer>
+            <LogoContainer to='/'>
                 <Logo className='logo'/>
             </LogoContainer>
             <OptionsContainer>
-                <OptionLink  to='/shop'>SHOP</OptionLink>
-                <OptionLink  to='/contact'>Contact</OptionLink>
+                <OptionLink to='/shop'>SHOP</OptionLink>
+                <OptionLink to='/contact'>Contact</OptionLink>
                 {
-                    currentUser ? <OptionDiv  onClick={() => auth.signOut()}>Sign Out</OptionDiv> :
+                    currentUser ? <OptionDiv onClick={() => auth.signOut()}>Sign Out</OptionDiv> :
                         <OptionLink className='option' to='/contact'>Sign in</OptionLink>
                 }
                 <CartIcon/>
@@ -41,8 +40,8 @@ const Header = ({currentUser, hidden}) => {
     );
 };
 //region  const mapStateToProps = (state) --> maps and creates currentUser object to State.user.currentUser.
-const mapStateToProps =  createStructuredSelector({
-   // createStructuredSelector can pass a reference easily instead of creating currentUser:selectCurremtUser(state)
+const mapStateToProps = createStructuredSelector({
+    // createStructuredSelector can pass a reference easily instead of creating currentUser:selectCurremtUser(state)
     currentUser: selectCurrentUser,
     hidden: selectCartHidden
 
@@ -51,5 +50,5 @@ const mapStateToProps =  createStructuredSelector({
 //endregion
 
 export default connect(
-               mapStateToProps)
-               (Header);
+    mapStateToProps)
+(Header);
