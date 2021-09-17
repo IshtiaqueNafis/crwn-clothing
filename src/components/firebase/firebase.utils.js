@@ -93,13 +93,13 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 export const addCollectionAndDocuments = async (collectionKey, ObjectsToAdd) => {
     const collectionRef = fireStore.collection(collectionKey) //CollectionReference
     console.log(collectionRef) // this will get a collection reference object.
-    const batch = fireStore.batch()
+    const batch = fireStore.batch(); // this will push objects based on what ever I want to create.
     ObjectsToAdd.forEach(obj => {
         const newDocRef = collectionRef.doc(); // get it on an empty string. and randomly generate an id // this will be a doucment reference.
-        batch.set(newDocRef, obj) // newDOcref is the array that is being passed and set it to object.
+        batch.set(newDocRef, obj) // pass the doc along side object
 
     })
-    return await batch.commit();
+    return await batch.commit(); // means data will be created.
 }
 
 
