@@ -1,8 +1,7 @@
-import SHOP_DATA from "./Shop.Data";
 import ShopActionTypes from "./shop.type";
 
 const INITIAL_STATE = {
-    collections: SHOP_DATA
+    collections: null
 
 }
 

@@ -9,8 +9,8 @@ export const selectCollections = createSelector(
 
 export const selectCollectionsForPreview = createSelector(
     [selectCollections],
-    collections => Object.keys(collections).map(
-        key => collections[key])
+    collections => collections ? Object.keys(collections).map(
+        key => collections[key]) : [] // means if there is a collection map else returns an empty array
     //region ***Object.keys(collections.map())***
     /*
 
@@ -20,9 +20,9 @@ export const selectCollectionsForPreview = createSelector(
      */
     //endregion
 
-)
+);
 export const selectCollection = collectionUrlParam => createSelector(
     // collectionURl Parm will recive an a string as a key. based on what ever passed key will be paseed hjere.
     [selectCollections], // this gets
-    collections => collections[collectionUrlParam]
+    collections =>  collections? collections[collectionUrlParam]: null
 )

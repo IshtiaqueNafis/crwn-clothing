@@ -61,7 +61,7 @@ class ShopPage extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    updateCollections: collectionMap => dispatch(UpdateCollections(collectionMap))
+    updateCollections: collectionMap =>  dispatch(UpdateCollections(collectionMap))
 })
 
 
