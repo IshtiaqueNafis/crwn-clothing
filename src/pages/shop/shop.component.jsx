@@ -5,9 +5,14 @@ import CollectionPage from "../collection/collection.component";
 import {convertCollectionSnapShotToMap, fireStore} from "../../components/firebase/firebase.utils";
 import {UpdateCollections} from "../../components/redux/shop/shop.actions";
 import {connect} from "react-redux";
+import WithSpinner from "../../components/spinner/with-spinner.component";
 
+const CollectionsOverViewWithSpinner = WithSpinner(CollectionsOverView) // this is the HigherOrderfunction that takes CollectionOverFiew as a componenet.
+const CollectionsPageWithSpinner = WithSpinner(CollectionPage) //
 
 class ShopPage extends React.Component {
+
+    state = {loading: true}
 
     unsubscribeFromSnapshot = null; // snapshot represent snapshot collections of the array comes from fireStore
 
@@ -19,6 +24,7 @@ class ShopPage extends React.Component {
             const collectionMap = convertCollectionSnapShotToMap(snapShot); // snapshot being passed convertCollectionSnapShotToMap
             // collectioNmap beocmes an object.
             updateCollections(collectionMap)
+            this.setState({loading: false})
         })
 
 
@@ -38,6 +44,7 @@ class ShopPage extends React.Component {
 
     render() {
         let {match} = this.props; // match object is avilable from route a
+        const {loading} = this.state;
         //region ***match***
         /*
        *** <Route path='/shop' component={ShopPage}/>***
@@ -50,10 +57,16 @@ class ShopPage extends React.Component {
         return (
             <div className='shop-page'>
 
-                <Route exact path={`${match.path}`} component={CollectionsOverView}/>
+                <Route exact path={`${match.path}`} render={props =>
+                    <CollectionsOverViewWithSpinner
+                        isLoading={loading} // isloading is being passed here
+                        {...props}/>}/>
                 <Route
                     path={`${match.path}/:collectionId`}
-                    component={CollectionPage}/>
+                    render={props => <CollectionsPageWithSpinner
+                        isLoading={loading}  //
+                        {...props}/>}
+                />
 
             </div>
         );
@@ -61,7 +74,7 @@ class ShopPage extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    updateCollections: collectionMap =>  dispatch(UpdateCollections(collectionMap))
+    updateCollections: collectionMap => dispatch(UpdateCollections(collectionMap))
 })
 
 
