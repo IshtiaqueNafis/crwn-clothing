@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import {Redirect, Route, Switch} from "react-router-dom";
-import {auth, createUserProfileDocument} from "./components/firebase/firebase.utils";
+import {addCollectionAndDocuments, auth, createUserProfileDocument} from "./components/firebase/firebase.utils";
 import {connect} from 'react-redux';
 import HomePage from "./pages/homepage/homePage.Component";
 import ShopPage from "./pages/shop/shop.component";
@@ -11,11 +11,13 @@ import SignInSignUpPage from "./pages/sign-in-sign-up/sign-in-sign-up.component"
 import {setCurrentUser} from "./components/redux/user/user.action";
 import {createStructuredSelector} from "reselect";
 import {selectCurrentUser} from "./components/redux/user/user.selector";
+import {selectCollectionsForPreview} from "./components/redux/shop/shop.selector";
 
 //region redux mapStateToProps,mapDispatchToProps
 //region const mapStateToProps =  createStructuredSelector() -->setCurrentUser
 const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser
+    currentUser: selectCurrentUser,
+    collectionsArray: selectCollectionsForPreview
 })
 //endregion
 
@@ -50,7 +52,8 @@ class App extends React.Component {
 
     componentDidMount() {
 
-        const {setCurrentUser} = this.props; // this is coming from
+
+        const {setCurrentUser, collectionsArray} = this.props; // this is coming from
 
         this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
             // auth.onAuthStateChanged --> will check whether user status have changed or not.--> change only happneds when the user has logged in.
@@ -67,9 +70,11 @@ class App extends React.Component {
                         }
                     );
                 })
-            } else {
-                setCurrentUser(userAuth);
             }
+
+            setCurrentUser(userAuth);
+            await addCollectionAndDocuments('collections', collectionsArray.map(({title, items}) => ({title, items})));
+            //id needs to be created so items and titles are passed.
 
 
         })

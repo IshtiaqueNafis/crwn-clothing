@@ -88,4 +88,21 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
 //endregion
 
+
+//region
+export const addCollectionAndDocuments = async (collectionKey, ObjectsToAdd) => {
+    const collectionRef = fireStore.collection(collectionKey) //CollectionReference
+    console.log(collectionRef) // this will get a collection reference object.
+    const batch = fireStore.batch()
+    ObjectsToAdd.forEach(obj => {
+        const newDocRef = collectionRef.doc(); // get it on an empty string. and randomly generate an id // this will be a doucment reference.
+        batch.set(newDocRef, obj) // newDOcref is the array that is being passed and set it to object.
+
+    })
+    return await batch.commit();
+}
+
+
+//endregion
+
 export default firebase;
