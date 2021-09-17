@@ -89,7 +89,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 //endregion
 
 
-//region
+//region addCollectionAndDocuments --> will add data to database.
 export const addCollectionAndDocuments = async (collectionKey, ObjectsToAdd) => {
     const collectionRef = fireStore.collection(collectionKey) //CollectionReference
     console.log(collectionRef) // this will get a collection reference object.
@@ -105,4 +105,66 @@ export const addCollectionAndDocuments = async (collectionKey, ObjectsToAdd) => 
 
 //endregion
 
+//region
+export const convertCollectionSnapShotToMap = (collections) => {
+    //collections is a query snapshot.
+    const transformCollection = collections.docs.map(doc => {
+        //region ***collections.docs.map(doc***
+        /*
+        collection.docs.map is an array
+        doc --> querydocumentsnapshot.
+         collections.docs.map --> this will be an array. in the object this where the array is located.
+        */
+
+        //endregion
+         // returns an object with with items and title.
+        const {title, items} = doc.data(); // --> doc.data() gives acess to data() which has the following property
+
+        return {
+            routeName: encodeURI(title.toLowerCase()),
+            id: doc.id,
+            title, // title is the key value is the key as well
+            items // itesm is they key values are items aka obkects
+        }
+        //region ***transformCollection explained***
+        /* items is an array of an object.
+        ***collections.docs.map***
+        * means collections reference then convert to docs by using collections.docs.map
+        *** doc => {const {title, items} = doc.data()***
+        * doc const title,items are being destrucred from title,items from doc.data()
+        *** return {routeName: encodeURI(title.toLowerCase()),id: doc.id,title,items}***
+        * this will return a new object  with the following properties.
+        * routeName: encodeURI(title.toLowerCase()) --> this will make sure there is no space in between
+        * id:get the doc.id
+        * title-->get the title of the page
+        * items get the items array of the value.
+
+         */
+        //
+        //doc =>
+        //endregion
+    })
+    console.log(transformCollection)
+     //region ***transformCollection***
+    /*
+    ****TransformCollection***
+    * this will be an array with the following property. title:string and routeName:string,ID:string,title:string and items:[]
+     */
+    /*
+     */
+    //endregion
+    return transformCollection.reduce((accumulator, collection) => {
+        accumulator[collection.title.toLowerCase()] = collection;
+
+        // [collection.id] --> this makes it a key so its easy to find thus accumulator bcecomes a key here.
+        //convert to a big object
+
+        return accumulator;
+    }, {})
+
+}
+
+//endregion
+
 export default firebase;
+
