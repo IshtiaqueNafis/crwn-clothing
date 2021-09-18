@@ -19,6 +19,8 @@ class ShopPage extends React.Component {
     componentDidMount() {
         const {updateCollections} = this.props
         const collectionRef = fireStore.collection('collections') // means get the fireStore ColelctionsDatabase
+
+        //region ObserverPattern
         collectionRef.onSnapshot(async snapShot => {
 
             const collectionMap = convertCollectionSnapShotToMap(snapShot); // snapshot being passed convertCollectionSnapShotToMap
@@ -26,8 +28,6 @@ class ShopPage extends React.Component {
             updateCollections(collectionMap)
             this.setState({loading: false})
         })
-
-
         //region ***(collectionRef***
         /*
         ***fireStore.collection('collections')***
@@ -38,6 +38,40 @@ class ShopPage extends React.Component {
          */
 
         //endregion
+        //endregion
+
+
+        //region PromisePattern
+        // collectionRef.get().then(snapShot => {
+        //
+        //     const collectionMap = convertCollectionSnapShotToMap(snapShot); // snapshot being passed convertCollectionSnapShotToMap
+        //     // collectioNmap beocmes an object.
+        //     updateCollections(collectionMap)
+        //     this.setState({loading: false})
+        // })
+        // makes an api call get data assosiated with CollectionRef will get a snapshot object
+        //region
+        /*
+        ***(collectionRef.get().then***
+        * makes an api call get data assosiated with CollectionRef will get a snapshot object
+        * **snapShot => {  const collectionMap = convertCollectionSnapShotToMap(snapShot)
+            ** const collectionMap = convertCollectionSnapShotToMap(snapShot); // snapshot being passed convertCollectionSnapShotToMap
+            ** all the code is same as observable pattern
+
+         */
+        //endregion
+
+
+        //endregion
+
+
+        //region ***FetchPattern***
+        //
+        // fetch('https://firestore.googleapis.com/v1/projects/crown-db-815b5/databases/(default)/documents/collections')
+        //     .then(response => response.json()).then(collections => console.log(collections))
+
+        //endregion
+
 
     }
 
