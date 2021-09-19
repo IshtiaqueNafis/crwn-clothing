@@ -10,8 +10,9 @@ import {applyMiddleware, createStore} from 'redux';
 import {logger} from 'redux-logger'; // logs the action.
 import rootReducer from './root-reducer';
 import {persistStore} from 'redux-persist'
+import thunk from 'redux-thunk'
 
-const middlewares = [logger];  // store expects a middlewares array.
+const middlewares = [logger, thunk];  // store expects a middlewares array.
 
 const store = createStore(rootReducer, applyMiddleware(...middlewares));
 //region **** const store = createStore(rootReducer, applyMiddleware(...middlewares)); ****

@@ -24,5 +24,10 @@ export const selectCollectionsForPreview = createSelector(
 export const selectCollection = collectionUrlParam => createSelector(
     // collectionURl Parm will recive an a string as a key. based on what ever passed key will be paseed hjere.
     [selectCollections], // this gets
-    collections =>  collections? collections[collectionUrlParam]: null
+    collections => collections ? collections[collectionUrlParam] : null
+)
+
+export const selectIsCollectionsFetching = createSelector(
+    [selectShop],
+    shop => shop.isFetching
 )
