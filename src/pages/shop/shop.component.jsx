@@ -6,9 +6,10 @@ import {fetchCollectionsStartAsync} from "../../components/redux/shop/shop.actio
 import {connect} from "react-redux";
 import WithSpinner from "../../components/spinner/with-spinner.component";
 import {createStructuredSelector} from "reselect";
-import {selectIsCollectionsFetching, selectIsCollectionsLoaded} from "../../components/redux/shop/shop.selector";
-
-const CollectionsOverViewWithSpinner = WithSpinner(CollectionsOverView) // this is the HigherOrderfunction that takes CollectionOverFiew as a componenet.
+import {selectIsCollectionsLoaded} from "../../components/redux/shop/shop.selector";
+import CollectionsOverViewContainer from "../../components/collection-overview/collections-overview.container";
+WithSpinner(CollectionsOverView);
+// this is the HigherOrderfunction that takes CollectionOverFiew as a componenet.
 const CollectionsPageWithSpinner = WithSpinner(CollectionPage) //
 
 class ShopPage extends React.Component {
@@ -24,7 +25,7 @@ class ShopPage extends React.Component {
 
 
     render() {
-        let {match, isCollectionFetching, isCollectionsLoaded} = this.props; // match object is avilable from route a
+        let {match, isCollectionsLoaded} = this.props; // match object is avilable from route a
 
         //region ***match***
         /*
@@ -38,10 +39,7 @@ class ShopPage extends React.Component {
         return (
             <div className='shop-page'>
 
-                <Route exact path={`${match.path}`} render={props =>
-                    <CollectionsOverViewWithSpinner
-                        isLoading={isCollectionFetching} // isloading is being passed here
-                        {...props}/>}/>
+                <Route exact path={`${match.path}`} component={CollectionsOverViewContainer}/>
                 <Route
                     path={`${match.path}/:collectionId`}
                     render={props => <CollectionsPageWithSpinner
@@ -55,7 +53,6 @@ class ShopPage extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-    isCollectionFetching: selectIsCollectionsFetching,
     isCollectionsLoaded: selectIsCollectionsLoaded
 })
 
