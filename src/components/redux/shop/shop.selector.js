@@ -1,11 +1,11 @@
 import {createSelector} from 'reselect'
 
-const selectShop = state => state.shop;
+const selectShop = state => state.shop; // gets the shop from the reducer state means reducer
 
 export const selectCollections = createSelector(
     [selectShop],
-    shop => shop.collections
-)
+    shop => shop.collections // gets the collections from the shop.collections.
+);
 
 export const selectCollectionsForPreview = createSelector(
     [selectCollections],
@@ -30,4 +30,10 @@ export const selectCollection = collectionUrlParam => createSelector(
 export const selectIsCollectionsFetching = createSelector(
     [selectShop],
     shop => shop.isFetching
+)
+
+export const selectIsCollectionsLoaded = createSelector(
+    [selectShop],
+    shop => !!shop.collections // means the collection is loaded
+    //!! will convert anything to its true value.
 )

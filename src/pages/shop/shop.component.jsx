@@ -6,7 +6,7 @@ import {fetchCollectionsStartAsync} from "../../components/redux/shop/shop.actio
 import {connect} from "react-redux";
 import WithSpinner from "../../components/spinner/with-spinner.component";
 import {createStructuredSelector} from "reselect";
-import {selectIsCollectionsFetching} from "../../components/redux/shop/shop.selector";
+import {selectIsCollectionsFetching, selectIsCollectionsLoaded} from "../../components/redux/shop/shop.selector";
 
 const CollectionsOverViewWithSpinner = WithSpinner(CollectionsOverView) // this is the HigherOrderfunction that takes CollectionOverFiew as a componenet.
 const CollectionsPageWithSpinner = WithSpinner(CollectionPage) //
@@ -17,14 +17,14 @@ class ShopPage extends React.Component {
     unsubscribeFromSnapshot = null; // snapshot represent snapshot collections of the array comes from fireStore
 
     componentDidMount() {
-        let { fetchCollectionsStartAsync} = this.props;
+        let {fetchCollectionsStartAsync} = this.props;
         fetchCollectionsStartAsync()
 
     }
 
 
     render() {
-        let {match, isCollectionFetching, fetchCollectionsStartAsync} = this.props; // match object is avilable from route a
+        let {match, isCollectionFetching, isCollectionsLoaded} = this.props; // match object is avilable from route a
 
         //region ***match***
         /*
@@ -33,7 +33,7 @@ class ShopPage extends React.Component {
        * thus in here shop page become avilable.
        * match.path --> shop/
          */
-
+        console.log(isCollectionsLoaded)
         //endregion
         return (
             <div className='shop-page'>
@@ -45,7 +45,7 @@ class ShopPage extends React.Component {
                 <Route
                     path={`${match.path}/:collectionId`}
                     render={props => <CollectionsPageWithSpinner
-                        isLoading={isCollectionFetching}  //
+                        isLoading={!isCollectionsLoaded}  //this make sure state is false so after the state can be loaded.
                         {...props}/>}
                 />
 
@@ -55,7 +55,8 @@ class ShopPage extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-    isCollectionFetching: selectIsCollectionsFetching
+    isCollectionFetching: selectIsCollectionsFetching,
+    isCollectionsLoaded: selectIsCollectionsLoaded
 })
 
 const mapDispatchToProps = dispatch => ({
